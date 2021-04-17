@@ -19,6 +19,21 @@ ODD = "odd"
 EVEN = "even"
 PRIME = "prime"
 
+def is_prime(number: int):
+    """
+    функция, которая принимает на вход число и определяет,
+    является ли это число простым
+
+    >>> is_prime(4)
+    <<< False
+    >>> is_prime(3)
+    <<< True
+    """
+    for i in range(2, number):
+        if number % i == 0:
+            return False
+    return True
+    
 
 def filter_numbers():
     """
