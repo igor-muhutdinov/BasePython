@@ -6,10 +6,13 @@ from homework_02 import exceptions
 
 
 class Plane(Vehicle):
-    cargo: float
+    cargo: float = 0
     max_cargo: float
 
-    def __init__(self, max_cargo):
+    def __init__(self, weight, fuel, fuel_consumption, max_cargo):
+        self.weight = weight
+        self.fuel = fuel
+        self.fuel_consumption = fuel_consumption
         self.max_cargo = max_cargo
 
     def load_cargo(self, cargo: float):
