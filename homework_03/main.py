@@ -13,13 +13,16 @@
 - закрытие соединения с БД
 """
 
+import asyncio
+import models
+
 
 async def async_main():
-    pass
+    await models.create_tables()
 
 
 def main():
-    pass
+    asyncio.run(async_main())
 
 
 if __name__ == "__main__":
