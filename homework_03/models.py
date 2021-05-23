@@ -7,7 +7,7 @@
 для модели Post обязательными являются user_id, title, body
 создайте связи relationship между моделями: User.posts и Post.user
 """
-
+import asyncio
 import os
 
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -31,19 +31,29 @@ class User(Base):
     __mapper_args__ = {"eager_defaults": True}
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    username = Column(String)
-    email = Column(String)
+    name = Column(String, nullable=False, default="", server_default="")
+    username = Column(String, nullable=False, default="", server_default="")
+    email = Column(String, nullable=False, default="", server_default="")
 
-    posts = relationship("Post")
+    posts = relationship("Post", back_populates="post")
 
 
 class Post(Base):
     __tablename__ = "posts"
     __mapper_args__ = {"eager_defaults": True}
 
-    user_id = Column(ForeignKey("users.id"))
-    title = Column(String)
-    body = Column(String)
+    id = Column(Integer, primary_key=True)
+    user_id = Column(ForeignKey(User.id), nullable=False)
+    title = Column(String, nullable=False, default="", server_default="")
+    body = Column(String, nullable=False, default="", server_default="")
 
-    users = relationship("User")
+    users = relationship("User", back_populates="user")
+
+
+async def create_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+
+if __name__ == '__main__':
+    asyncio.run(create_tables())
