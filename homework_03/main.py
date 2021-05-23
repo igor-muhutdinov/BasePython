@@ -15,10 +15,12 @@
 
 import asyncio
 import models
+from jsonplaceholder_requests import get_users_data_from_url, get_posts_data_from_url
 
 
 async def async_main():
     await models.create_tables()
+    users, posts = await asyncio.gather(get_users_data_from_url(), get_posts_data_from_url())
 
 
 def main():
