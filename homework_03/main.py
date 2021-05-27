@@ -16,7 +16,6 @@
 import asyncio
 from models import create_tables, engine, User, Post
 from jsonplaceholder_requests import get_users_data_from_url, get_posts_data_from_url
-from json import JSONDecoder
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -28,32 +27,24 @@ async def async_main():
     await add_posts_to_db_from_json(posts)
 
 
-async def add_users_to_db_from_json(users: str):
-    json_decoder = JSONDecoder()
-    users_list = json_decoder.decode(users)
-
+async def add_users_to_db_from_json(users: dict):
     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-
     async with async_session() as session:
         session: AsyncSession
         async with session.begin():
-            for single_user in users_list:
+            for single_user in users:
                 user = User(name=single_user['name'],
                             username=single_user['username'],
                             email=single_user['email'])
                 session.add(user)
 
 
-async def add_posts_to_db_from_json(posts: str):
-    json_decoder = JSONDecoder()
-    posts_list = json_decoder.decode(posts)
-
+async def add_posts_to_db_from_json(posts: dict):
     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-
     async with async_session() as session:
         session: AsyncSession
         async with session.begin():
-            for single_post in posts_list:
+            for single_post in posts:
                 post = Post(user_id=single_post['userId'],
                             title=single_post['title'],
                             body=single_post['body'])
