@@ -35,7 +35,7 @@ class User(Base):
     username = Column(String, nullable=False, default="", server_default="")
     email = Column(String, nullable=False, default="", server_default="")
 
-    posts = relationship("Post", back_populates="users")
+    posts = relationship("Post", back_populates="user")
 
 
 class Post(Base):
@@ -47,7 +47,7 @@ class Post(Base):
     title = Column(String, nullable=False, default="", server_default="")
     body = Column(String, nullable=False, default="", server_default="")
 
-    users = relationship("User", back_populates="posts")
+    user = relationship("User", back_populates="posts")
 
 
 async def create_tables():
