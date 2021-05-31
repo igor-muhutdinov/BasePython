@@ -10,7 +10,7 @@
 import asyncio
 import os
 
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -23,7 +23,7 @@ from sqlalchemy.orm import relationship
 PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://postgres:secretpassword@localhost/postgres"
 engine = create_async_engine(PG_CONN_URI, echo=True)
 Base = declarative_base(engine)
-Session = sessionmaker(engine)
+Session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
 class User(Base):
