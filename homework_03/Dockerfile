@@ -5,16 +5,14 @@ WORKDIR /web-app
 RUN pip install poetry
 RUN poetry config virtualenvs.create false
 COPY pyproject.toml .
+COPY poetry.lock .
 RUN poetry install
 
 COPY ./web-app .
 
-ENV FLASK_ENV=development
-ENV FLASK_DEBUG=1
+EXPOSE 8000
 
-EXPOSE 80
-
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["uvicorn", "main:app", "--host=0.0.0.0", "--port=8000"]
 
 # для запуска ввести строку:
-# sudo docker run -p 80:80 web-app
+# sudo docker run -p 8000:8000 web-app
